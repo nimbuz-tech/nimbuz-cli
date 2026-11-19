@@ -4,19 +4,19 @@
 
 **Deploy and run apps, databases and AI models on [Nimbuz Cloud](https://nimbuz.tech) — straight from your terminal.**
 
-[![npm version](https://img.shields.io/npm/v/@nimbuz/cli?color=6d28d9&label=npm&logo=npm)](https://www.npmjs.com/package/@nimbuz/cli)
-[![npm downloads](https://img.shields.io/npm/dm/@nimbuz/cli?color=6d28d9)](https://www.npmjs.com/package/@nimbuz/cli)
+[![npm version](https://img.shields.io/npm/v/@nimbuz-tech/cli?color=6d28d9&label=npm&logo=npm)](https://www.npmjs.com/package/@nimbuz-tech/cli)
+[![npm downloads](https://img.shields.io/npm/dm/@nimbuz-tech/cli?color=6d28d9)](https://www.npmjs.com/package/@nimbuz-tech/cli)
 [![CI](https://github.com/nimbuz-tech/nimbuz-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/nimbuz-tech/nimbuz-cli/actions/workflows/ci.yml)
-[![node](https://img.shields.io/node/v/@nimbuz/cli?color=339933&logo=node.js&logoColor=white)](https://nodejs.org)
+[![node](https://img.shields.io/node/v/@nimbuz-tech/cli?color=339933&logo=node.js&logoColor=white)](https://nodejs.org)
 [![dependencies](https://img.shields.io/badge/dependencies-0-success)](package.json)
-[![license](https://img.shields.io/npm/l/@nimbuz/cli?color=blue)](LICENSE)
+[![license](https://img.shields.io/npm/l/@nimbuz-tech/cli?color=blue)](LICENSE)
 
 [Install](#-install) · [Quick start](#-quick-start) · [Commands](#-commands) · [Deploying](#-deploying) · [CI/CD](#-scripting--cicd) · [AI agents](#-for-ai-agents--llms) · [Full reference](docs/COMMANDS.md)
 
 </div>
 
 ```console
-$ npm i -g @nimbuz/cli
+$ npm i -g @nimbuz-tech/cli
 $ nimbuz login
 ✔ Logged in as jane@acme.com (acme)
 $ nimbuz use shop-api production
@@ -42,13 +42,13 @@ $ nimbuz deploy
 ## 📦 Install
 
 ```bash
-npm install -g @nimbuz/cli
+npm install -g @nimbuz-tech/cli
 ```
 
 Or run it without installing:
 
 ```bash
-npx @nimbuz/cli --help
+npx @nimbuz-tech/cli --help
 ```
 
 Requires **Node.js 18 or newer**. The installed binary is called `nimbuz`.
@@ -162,7 +162,7 @@ echo "$NIMBUZ_PASSWORD" | nimbuz login --org acme -u ci@acme.com --password-stdi
 ```yaml
 - uses: actions/setup-node@v4
   with: { node-version: 22 }
-- run: npx @nimbuz/cli deploy --env production --yes
+- run: npx @nimbuz-tech/cli deploy --env production --yes
   env:
     NIMBUZ_TOKEN: ${{ secrets.NIMBUZ_TOKEN }}
     DATABASE_URL: ${{ secrets.DATABASE_URL }}

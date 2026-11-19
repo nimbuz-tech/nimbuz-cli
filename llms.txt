@@ -1,6 +1,6 @@
-# Nimbuz CLI (@nimbuz/cli)
+# Nimbuz CLI (@nimbuz-tech/cli)
 
-> Official command-line interface for Nimbuz Cloud, a PaaS for deploying apps, managed databases/tools, cron jobs, domains and AI model endpoints. Binary name: `nimbuz`. Install: `npm i -g @nimbuz/cli` (Node.js >= 18, zero runtime dependencies). API base: https://api.nimbuz.tech.
+> Official command-line interface for Nimbuz Cloud, a PaaS for deploying apps, managed databases/tools, cron jobs, domains and AI model endpoints. Binary name: `nimbuz`. Install: `npm i -g @nimbuz-tech/cli` (Node.js >= 18, zero runtime dependencies). API base: https://api.nimbuz.tech.
 
 Key facts for agents:
 
@@ -36,4 +36,4 @@ Key facts for agents:
 
 - [Nimbuz documentation](https://docs.nimbuz.tech)
 - [Nimbuz API reference](https://docs.nimbuz.tech/api)
-- [npm package](https://www.npmjs.com/package/@nimbuz/cli)
+- [npm package](https://www.npmjs.com/package/@nimbuz-tech/cli)

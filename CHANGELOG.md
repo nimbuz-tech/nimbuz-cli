@@ -1,10 +1,10 @@
 # Changelog
 
-All notable changes to `@nimbuz/cli` are documented here. This project follows [Semantic Versioning](https://semver.org).
+All notable changes to `@nimbuz-tech/cli` are documented here. This project follows [Semantic Versioning](https://semver.org).
 
 ## 1.0.0 — 2026-11-19
 
-First public release on npm as `@nimbuz/cli`.
+First public release on npm as `@nimbuz-tech/cli`.
 
 - Full coverage of the Nimbuz Cloud portal: projects, environments, apps, managed tools, cron jobs, domains, AI endpoints, logs, metrics, billing, team and support.
 - `nimbuz init` / `nimbuz deploy` with the `nimbuz.json` manifest and `${VAR}` interpolation.

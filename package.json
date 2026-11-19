@@ -1,5 +1,5 @@
 {
-  "name": "@nimbuz/cli",
+  "name": "@nimbuz-tech/cli",
   "version": "1.0.0",
   "description": "Official command-line interface for Nimbuz Cloud — deploy apps, manage environments, databases, domains, AI models, logs, metrics and billing from your terminal.",
   "type": "module",
