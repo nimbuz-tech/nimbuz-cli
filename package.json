@@ -4,7 +4,7 @@
   "description": "Official command-line interface for Nimbuz Cloud — deploy apps, manage environments, databases, domains, AI models, logs, metrics and billing from your terminal.",
   "type": "module",
   "bin": {
-    "nimbuz": "./bin/nimbuz.js"
+    "nimbuz": "bin/nimbuz.js"
   },
   "files": [
     "bin",
