@@ -1,0 +1,57 @@
+{
+  "name": "@nimbuz/cli",
+  "version": "1.0.0",
+  "description": "Official command-line interface for Nimbuz Cloud — deploy apps, manage environments, databases, domains, AI models, logs, metrics and billing from your terminal.",
+  "type": "module",
+  "bin": {
+    "nimbuz": "./bin/nimbuz.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "docs",
+    "README.md",
+    "LICENSE",
+    "llms.txt",
+    "AGENTS.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "start": "node ./bin/nimbuz.js",
+    "test": "node --test test/*.test.js",
+    "docs": "node scripts/gen-docs.js",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "nimbuz",
+    "nimbuz-cloud",
+    "cli",
+    "paas",
+    "deploy",
+    "cloud",
+    "devops",
+    "kubernetes",
+    "hosting",
+    "databases",
+    "ai",
+    "llm",
+    "ci-cd",
+    "zero-dependency"
+  ],
+  "homepage": "https://github.com/nimbuz-tech/nimbuz-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nimbuz-tech/nimbuz-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nimbuz-tech/nimbuz-cli/issues"
+  },
+  "author": "Nimbuz <https://nimbuz.tech>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
