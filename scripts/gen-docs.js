@@ -39,12 +39,15 @@ function usage(node, words) {
   return parts.join(" ");
 }
 
+// Documented elsewhere or intentionally left out of the public reference.
+const EXCLUDED = new Set(["cron", "api", "completion", "version"]);
+
 const sections = [];
 const index = [];
 
 function walk(node, words, depth) {
   for (const child of node.commands ?? []) {
-    if (child.hidden) continue;
+    if (child.hidden || (depth === 0 && EXCLUDED.has(child.name))) continue;
     const path = [...words, child.name];
     const title = `nimbuz ${path.join(" ")}`;
     const anchor = title.toLowerCase().replace(/[^a-z0-9 -]/g, "").replace(/ /g, "-");

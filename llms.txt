@@ -1,6 +1,6 @@
 # Nimbuz CLI (@nimbuz-tech/cli)
 
-> Official command-line interface for Nimbuz Cloud, a PaaS for deploying apps, managed databases/tools, cron jobs, domains and AI model endpoints. Binary name: `nimbuz`. Install: `npm i -g @nimbuz-tech/cli` (Node.js >= 18, zero runtime dependencies). API base: https://api.nimbuz.tech.
+> Official command-line interface for Nimbuz Cloud, a PaaS organised as projects → environments → apps and managed tools (databases, services). Binary name: `nimbuz`. Install: `npm i -g @nimbuz-tech/cli` (Node.js >= 18, zero runtime dependencies). API base: https://api.nimbuz.tech.
 
 Key facts for agents:
 
@@ -10,7 +10,6 @@ Key facts for agents:
 - Exit codes: 0 ok, 1 error, 2 usage error, 4 not logged in / session expired, 5 not found, 130 cancelled.
 - Destructive commands (delete, stop, revoke…) require `--yes` when there is no TTY.
 - Deploy flow: `nimbuz init` writes `nimbuz.json`; `nimbuz deploy` creates-or-updates the app and waits until live. `${VAR}` / `${VAR:-default}` in the manifest are read from the environment.
-- Escape hatch: `nimbuz api [METHOD] <path> [-Q k=v] [-F k=v] [--scoped]` makes any authenticated API request; `{projectId}`, `{environmentId}`, `{accountId}` placeholders are filled from context.
 - Config: `~/.nimbuz-cli/config.json` (override with `NIMBUZ_CONFIG_DIR`); multiple accounts via `--profile <name>`.
 
 ## Docs
@@ -19,18 +18,17 @@ Key facts for agents:
 - [Command reference](https://github.com/nimbuz-tech/nimbuz-cli/blob/main/docs/COMMANDS.md): every command, argument and flag (auto-generated from source)
 - [AGENTS.md](https://github.com/nimbuz-tech/nimbuz-cli/blob/main/AGENTS.md): guide for AI agents using or modifying the CLI
 
-## Command groups
+## Core command groups
+
+Hierarchy: Project → Environment → Apps and Tools.
+
 
 - `login`, `logout`, `whoami`, `use`, `context`, `status`, `init`, `deploy`: getting started
-- `projects`, `envs`: workspace (projects and environments, quotas)
-- `apps` (incl. `apps env`, `apps secrets`): application deployments, rollouts, releases
-- `tools`: managed PostgreSQL, MongoDB, n8n and other catalog tools
-- `cron`: scheduled jobs
-- `domains`: public endpoints and custom domains
-- `ai`: AI model endpoints, API keys, rate limits, usage
-- `logs`, `metrics`: observability (streaming logs, CPU/memory/storage)
-- `billing`, `team`, `support`, `auth`, `config`: account management
-- `api`, `completion`, `version`: advanced
+- `projects`: list/get/create/update/delete projects (a project groups environments)
+- `envs`: list/get/create/update/delete environments, set CPU/memory/storage limits, `envs usage` for quota
+- `apps`: create from Git or archive, update/scale, redeploy, start/stop/restart, status --watch, releases, `apps env` and `apps secrets`
+- `tools`: browse `tools catalog`, install/update/resize/start/stop/delete managed PostgreSQL, MongoDB, n8n and more; `tools get` shows connection details
+- Also: `domains`, `ai`, `logs`, `metrics`, `billing`, `team`, `support`, `auth`, `config`
 
 ## Optional
 

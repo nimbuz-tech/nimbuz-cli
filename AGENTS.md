@@ -17,8 +17,7 @@ nimbuz logs api --since 15m --grep ERROR -p shop-api -E production
 3. **Be explicit about scope** with `-p <project> -E <env>` instead of relying on saved context.
 4. **Branch on exit codes**: `0` ok · `1` error · `2` usage · `4` auth needed/expired · `5` not found · `130` cancelled.
 5. Discover flags with `nimbuz <command> --help` or read [`docs/COMMANDS.md`](docs/COMMANDS.md).
-6. If a capability is not wrapped, use `nimbuz api <path> --json` rather than calling the HTTP API by hand.
-7. Never print or log `nimbuz auth token` output; treat it as a secret.
+6. Never print or log `nimbuz auth token` output; treat it as a secret.
 
 ## Working on this repository
 

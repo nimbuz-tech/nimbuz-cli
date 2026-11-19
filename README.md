@@ -2,7 +2,7 @@
 
 # ☁️ Nimbuz CLI
 
-**Deploy and run apps, databases and AI models on [Nimbuz Cloud](https://nimbuz.tech) — straight from your terminal.**
+**Projects, environments, apps and managed tools on [Nimbuz Cloud](https://nimbuz.tech) — straight from your terminal.**
 
 [![npm version](https://img.shields.io/npm/v/@nimbuz-tech/cli?color=6d28d9&label=npm&logo=npm)](https://www.npmjs.com/package/@nimbuz-tech/cli)
 [![npm downloads](https://img.shields.io/npm/dm/@nimbuz-tech/cli?color=6d28d9)](https://www.npmjs.com/package/@nimbuz-tech/cli)
@@ -11,47 +11,50 @@
 [![dependencies](https://img.shields.io/badge/dependencies-0-success)](package.json)
 [![license](https://img.shields.io/npm/l/@nimbuz-tech/cli?color=blue)](LICENSE)
 
-[Install](#-install) · [Quick start](#-quick-start) · [Commands](#-commands) · [Deploying](#-deploying) · [CI/CD](#-scripting--cicd) · [AI agents](#-for-ai-agents--llms) · [Full reference](docs/COMMANDS.md)
+[Install](#-install) · [Quick start](#-quick-start) · [Projects](#-projects) · [Environments](#-environments) · [Apps](#-apps) · [Tools](#-managed-tools) · [CI/CD](#-scripting--cicd) · [Full reference](docs/COMMANDS.md)
 
 </div>
 
-```console
-$ npm i -g @nimbuz-tech/cli
-$ nimbuz login
-✔ Logged in as jane@acme.com (acme)
-$ nimbuz use shop-api production
-$ nimbuz deploy
-▸ Building shop-api from github.com/acme/shop-api@main
-▸ Rolling out 2/2 replicas …
-✔ shop-api is live → https://shop-api.acme.nimbuz.app
+```bash
+npm i -g @nimbuz-tech/cli
+
+nimbuz login
+nimbuz projects create shop-api                    # project + "production" environment
+nimbuz tools install postgresql orders-db          # managed database
+nimbuz apps create api --repo acme/shop-api --port 3000 --wait
 ```
 
 ---
+
+## 🧭 How Nimbuz is organised
+
+```text
+Project  (shop-api)
+ └─ Environment  (production, staging, …)   ← resource limits & quotas
+     ├─ Apps   (api, web, worker …)          ← built from Git or an archive
+     └─ Tools  (PostgreSQL, MongoDB, n8n …)  ← managed, one-command installs
+```
+
+Every app and tool lives in an **environment**, and every environment belongs to a **project**. The CLI mirrors this: pick a project and environment once with `nimbuz use`, then work with apps and tools.
 
 ## ✨ Why Nimbuz CLI
 
 | | |
 | --- | --- |
 | 🚀 **One-command deploys** | `nimbuz deploy` creates the app if it is missing, rolls out changes if it exists, and waits until it is live. |
-| 🧭 **Everything the portal does** | Projects, environments, apps, managed databases, cron jobs, domains, AI endpoints, logs, metrics, billing, team and support — 130+ commands. |
-| 🤖 **Built for scripts, CI and AI agents** | `--json` on stdout, progress on stderr, `--quiet` IDs, `--yes` for non-interactive runs, and stable exit codes. |
-| 📄 **Declarative manifest** | Commit a `nimbuz.json`; keep secrets out of git with `${VAR}` interpolation. |
-| 🪶 **Zero dependencies** | Pure Node.js 18+. Installs in seconds, nothing to audit but this repo. |
+| 🗄️ **Managed tools in seconds** | Install PostgreSQL, MongoDB, n8n and more from the catalog, then resize, stop or start them. |
+| 🌱 **Environments with guardrails** | Separate production and staging, each with its own CPU, memory and storage limits. |
+| 🤖 **Built for scripts, CI and AI agents** | `--json` on stdout, progress on stderr, `--quiet` IDs, `--yes` for non-interactive runs, stable exit codes. |
+| 🪶 **Zero dependencies** | Pure Node.js 18+. Installs in seconds. |
 | 🔐 **Safe by default** | 2FA login, sessions stored with mode `0600`, secrets redacted in `--debug` logs, confirmations on destructive actions. |
 
 ## 📦 Install
 
 ```bash
-npm install -g @nimbuz-tech/cli
+npm install -g @nimbuz-tech/cli      # installs the `nimbuz` command
 ```
 
-Or run it without installing:
-
-```bash
-npx @nimbuz-tech/cli --help
-```
-
-Requires **Node.js 18 or newer**. The installed binary is called `nimbuz`.
+Or run it without installing: `npx @nimbuz-tech/cli --help`. Requires **Node.js 18 or newer**.
 
 ## ⚡ Quick start
 
@@ -59,63 +62,97 @@ Requires **Node.js 18 or newer**. The installed binary is called `nimbuz`.
 nimbuz login                         # Individual or Business account, supports 2FA
 nimbuz projects create shop-api      # creates the project and a "production" environment
 nimbuz init                          # writes nimbuz.json from your git remote / package.json
-nimbuz deploy                        # create-or-update, then wait until it is live
-nimbuz logs shop-api -f              # stream logs
+nimbuz deploy                        # create-or-update the app, then wait until it is live
 nimbuz status                        # overview of the current environment
 ```
 
-Run `nimbuz --help` or `nimbuz <command> --help` for every flag and example.
+Run `nimbuz <command> --help` for every flag and example.
 
-## 🧰 Commands
+---
 
-| Area | Commands |
+## 📁 Projects
+
+A project groups everything that belongs to one product or service.
+
+| Command | What it does |
 | --- | --- |
-| **Getting started** | `login` · `logout` · `whoami` · `use [project] [env]` · `context` · `status` · `init` · `deploy` |
-| **Projects** | `projects list\|get\|create\|update\|delete` |
-| **Environments** | `envs list\|get\|create\|update\|delete\|usage` |
-| **Apps** | `apps list\|get\|create\|update\|redeploy\|start\|stop\|restart\|delete\|status [--watch]\|releases\|cancel\|open` |
-| | `apps env list\|set\|unset` · `apps secrets list\|set\|unset` |
-| **Managed tools** (PostgreSQL, MongoDB, n8n…) | `tools catalog\|list\|get\|install\|update\|resize\|start\|stop\|delete` |
-| **Cron jobs** | `cron list\|runs\|create\|start\|stop\|delete` |
-| **Domains** | `domains list\|expose\|add\|verify\|remove\|unexpose` |
-| **AI endpoints** | `ai models\|list\|create\|rotate-key\|rate-limit\|usage\|revoke\|env-key` |
-| **Logs** | `logs <app\|tool> [-f] [--since 1h] [--grep x] [--build]` |
-| **Metrics** | `metrics app\|tool\|env\|container [--since 6h] [--live]` |
-| **Billing** | `billing invoices\|invoice\|download\|usage\|forecast\|explorer\|credits\|limits\|pricing` · `billing budget …` · `billing alerts …` |
-| **Team** | `team list\|invite\|remove\|policies\|grant\|revoke` |
-| **Support** | `support list\|show\|create\|reply` |
-| **Account** | `auth status\|token\|2fa …\|change-password\|forgot-password` · `config list\|get\|set\|unset\|path\|profiles` |
-| **Advanced** | `api <path>` (raw authenticated requests) · `completion bash\|zsh\|fish` · `version` |
+| `nimbuz projects list` | List projects (`ls`) |
+| `nimbuz projects get [project]` | Show a project and its environments |
+| `nimbuz projects create [name]` | Create a project and its first environment |
+| `nimbuz projects update [project]` | Rename a project or change its description |
+| `nimbuz projects delete [project]` | Delete an empty project (`rm`) |
 
-Most commands have short aliases — `apps ls`, `envs rm`, `tools db`, `metrics top`.
+```bash
+nimbuz projects create shop-api -d "Backend for the web shop"
+nimbuz projects create shop-api --env-name staging --region ap-south-1
+nimbuz use shop-api production       # set the current project + environment
+```
 
-📖 **The complete, auto-generated reference of every command, argument and flag lives in [`docs/COMMANDS.md`](docs/COMMANDS.md).**
+## 🌱 Environments
 
-## 🎯 Context: project and environment
+Environments (`production`, `staging`, `dev`…) isolate workloads and carry their own resource limits.
 
-Nearly every command acts on a project and an environment. The CLI resolves them in this order:
+| Command | What it does |
+| --- | --- |
+| `nimbuz envs list` | List environments in the project |
+| `nimbuz envs get [env]` | Show an environment with limits and quotas |
+| `nimbuz envs create <name>` | Create an environment (`--use` to switch to it) |
+| `nimbuz envs update [env]` | Rename, or set `--cpu`, `--memory`, `--storage`, `--ephemeral` limits |
+| `nimbuz envs usage [env]` | Show remaining resource quota |
+| `nimbuz envs delete [env]` | Delete an empty environment |
+
+```bash
+nimbuz envs create staging --use
+nimbuz envs update production --cpu 4 --memory 8 --storage 20
+nimbuz envs usage
+```
+
+### Choosing project and environment
+
+The CLI resolves scope in this order:
 
 1. `--project / -p` and `--env / -E` flags (name or ID)
 2. `NIMBUZ_PROJECT` and `NIMBUZ_ENV` environment variables
 3. the saved context from `nimbuz use <project> [environment]`
-4. automatically, when only one exists — or by asking you in an interactive terminal
+4. automatically when only one exists — or by asking you in an interactive terminal
 
 Names match exactly, case-insensitively, or by a unique prefix (`nimbuz use sho` → `shop-api`).
 
-## 🚢 Deploying
+## 🚀 Apps
+
+Apps are built from Git (GitHub, GitLab, Bitbucket) or a local archive and run as containers.
+
+| Command | What it does |
+| --- | --- |
+| `nimbuz apps list` | List apps in the environment |
+| `nimbuz apps get <app>` | Show an app's configuration |
+| `nimbuz apps create [name]` | Create an app from Git or an archive |
+| `nimbuz apps update <app>` | Change settings — instance, replicas, autoscale, port… (`scale`) |
+| `nimbuz apps redeploy <app>` | Rebuild and redeploy from source |
+| `nimbuz apps start \| stop \| restart <app>` | Lifecycle control |
+| `nimbuz apps status [app] --watch` | Live rollout and pod status |
+| `nimbuz apps releases <app>` | Build / release history |
+| `nimbuz apps cancel <app>` | Cancel a running build |
+| `nimbuz apps open <app>` | Open the app in a browser |
+| `nimbuz apps env list \| set \| unset` | Environment variables |
+| `nimbuz apps secrets list \| set \| unset` | Secret variables |
+| `nimbuz apps delete <app>` | Delete an app |
 
 ```bash
-# From Git (GitHub / GitLab / Bitbucket; owner/repo is GitHub shorthand)
+# From Git (owner/repo is GitHub shorthand)
 nimbuz apps create shop-api --repo acme/shop-api -b main --port 3000 \
   -i small.m --health /health -e NODE_ENV=production --secret-file .env.secrets --wait
 
 # From a local archive
 nimbuz apps create site --archive ./dist.zip --port 80
 
-# Change settings (only what you pass is sent)
+# Scale and configure (only what you pass is sent)
 nimbuz apps update shop-api --instance medium.m --replicas 2
-nimbuz apps update shop-api --autoscale 2:6
+nimbuz apps scale shop-api --autoscale 2:6
+nimbuz apps env set shop-api LOG_LEVEL=info --wait
+nimbuz apps secrets set shop-api --from-file .env.production
 nimbuz apps redeploy shop-api --branch release/2.0 --wait
+nimbuz logs shop-api -f
 ```
 
 ### `nimbuz.json` manifest
@@ -141,7 +178,32 @@ nimbuz apps redeploy shop-api --branch release/2.0 --wait
 }
 ```
 
-Values written as `${VAR}` (or `${VAR:-default}`) are read from your shell, so CI secrets never need to be committed. Flags override the manifest. Use `-f` for another file: `nimbuz deploy -f deploy/prod.json --env production`.
+Values written as `${VAR}` (or `${VAR:-default}`) are read from your shell, so secrets never need to be committed. Flags override the manifest. Use `-f` for another file: `nimbuz deploy -f deploy/prod.json --env production`.
+
+## 🗄️ Managed tools
+
+Databases and services from the Nimbuz catalog — PostgreSQL, MongoDB, n8n and more — installed and operated for you.
+
+| Command | What it does |
+| --- | --- |
+| `nimbuz tools catalog [tool]` | Browse installable tools and their settings |
+| `nimbuz tools list` | List installed tools |
+| `nimbuz tools get <tool>` | Show connection details and values |
+| `nimbuz tools install <chart> [name]` | Install a tool (`--set key=value`, `--instance`, `--public`) |
+| `nimbuz tools update <tool>` | Change values or visibility |
+| `nimbuz tools resize <tool> <instance>` | Change the instance size |
+| `nimbuz tools start \| stop <tool>` | Lifecycle control |
+| `nimbuz tools delete <tool>` | Uninstall a tool **and delete its data** |
+
+```bash
+nimbuz tools catalog postgresql
+nimbuz tools install postgresql orders-db --set auth.postgresPassword=change-me
+nimbuz tools install mongodb catalog --set mongodb.persistence.size=2Gi --public
+nimbuz tools get orders-db           # host, port, credentials
+nimbuz tools resize orders-db small.r
+```
+
+---
 
 ## 🤖 Scripting & CI/CD
 
@@ -151,11 +213,8 @@ Values written as `${VAR}` (or `${VAR:-default}`) are read from your shell, so C
 | `-q, --quiet` | Print only names/IDs — `nimbuz apps ls -q \| xargs -n1 nimbuz apps restart` |
 | `-y, --yes` | Skip confirmations. Without a TTY, destructive commands require it. |
 
-**Non-interactive auth:** set `NIMBUZ_TOKEN`, or pipe a password:
-
-```bash
-echo "$NIMBUZ_PASSWORD" | nimbuz login --org acme -u ci@acme.com --password-stdin
-```
+Set `NIMBUZ_TOKEN` for non-interactive auth, or pipe a password:
+`echo "$NIMBUZ_PASSWORD" | nimbuz login --org acme -u ci@acme.com --password-stdin`.
 
 ### GitHub Actions
 
@@ -184,56 +243,31 @@ echo "$NIMBUZ_PASSWORD" | nimbuz login --org acme -u ci@acme.com --password-stdi
 | Variable | Purpose |
 | --- | --- |
 | `NIMBUZ_TOKEN` | Access token (overrides the saved session) |
-| `NIMBUZ_PROFILE` | Config profile |
 | `NIMBUZ_PROJECT` / `NIMBUZ_ENV` | Default project / environment |
+| `NIMBUZ_PROFILE` | Config profile (separate accounts side by side) |
 | `NIMBUZ_USERNAME` / `NIMBUZ_PASSWORD` | Non-interactive login |
 | `NIMBUZ_CONFIG_DIR` | Config directory (default `~/.nimbuz-cli`) |
 | `NIMBUZ_DEBUG` | Same as `--debug`: logs HTTP calls (secrets redacted) |
 | `NO_COLOR` / `FORCE_COLOR` | Color control |
 
-## 👥 Profiles
+## 🧩 Also included
 
-Keep several accounts side by side:
-
-```bash
-nimbuz --profile acme login --org acme
-nimbuz config profiles use acme
-```
-
-Sessions are stored in `~/.nimbuz-cli/config.json` with file mode `0600`.
-
-## 🔌 Raw API access
-
-Anything the CLI does not wrap yet is one authenticated call away. `{projectId}`, `{environmentId}` and `{accountId}` are filled in from your context.
-
-```bash
-nimbuz api /project/v1/projects
-nimbuz api /deployment/v1/deployments/list --scoped          # adds projectId & environmentId
-nimbuz api GET /pricing/v1/invoices -Q account_id={accountId} -Q limit=5
-```
-
-## 🐚 Shell completion
-
-```bash
-eval "$(nimbuz completion zsh)"      # add to ~/.zshrc   (also: bash, fish)
-```
+Beyond the core workflow, the CLI covers the rest of the portal: `domains` (public endpoints and custom domains), `ai` (model endpoints and API keys), `logs`, `metrics`, `billing`, `team`, `support`, `auth` and `config`. See [`docs/COMMANDS.md`](docs/COMMANDS.md) for every command, argument and flag.
 
 ## 🧠 For AI agents & LLMs
 
-This repository is optimised for coding agents and LLM tools:
-
-- **[`llms.txt`](llms.txt)** — a compact, structured summary of the CLI following the [llms.txt](https://llmstxt.org) convention.
+- **[`llms.txt`](llms.txt)** — compact, structured summary following the [llms.txt](https://llmstxt.org) convention.
 - **[`AGENTS.md`](AGENTS.md)** — how to drive the CLI non-interactively and how to work on this codebase.
-- **[`docs/COMMANDS.md`](docs/COMMANDS.md)** — every command, argument and flag, generated from the source of truth.
+- **[`docs/COMMANDS.md`](docs/COMMANDS.md)** — full command reference, generated from source.
 
-Rules of thumb for agents: always pass `--json` and `--yes`, set `NIMBUZ_TOKEN`, select scope with `-p/-E`, and branch on exit codes rather than parsing text.
+Rules of thumb: always pass `--json` and `--yes`, set `NIMBUZ_TOKEN`, select scope with `-p/-E`, and branch on exit codes.
 
 ## 🛠️ Development
 
 ```text
 bin/nimbuz.js          entry point
 src/cli.js             command tree, dispatch, error reporting
-src/core/              args parser, registry/help, HTTP+SSE client, config/profiles, context resolution, output
+src/core/              args parser, registry/help, HTTP client, config/profiles, context resolution, output
 src/lib/               deployment spec builder (flags + manifest → API body), rollout watcher
 src/commands/          one module per command group
 scripts/gen-docs.js    generates docs/COMMANDS.md from the registry
@@ -254,5 +288,5 @@ Contributions are welcome — please open an issue or pull request.
 [MIT](LICENSE) © Nimbuz
 
 <div align="center">
-<sub>Made with ☁️ by the <a href="https://nimbuz.tech">Nimbuz</a> team · <a href="https://docs.nimbuz.tech">Docs</a> · <a href="https://docs.nimbuz.tech/api">API reference</a></sub>
+<sub>Made with ☁️ by the <a href="https://nimbuz.tech">Nimbuz</a> team · <a href="https://docs.nimbuz.tech">Docs</a></sub>
 </div>
